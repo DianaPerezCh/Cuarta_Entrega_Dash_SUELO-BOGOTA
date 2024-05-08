@@ -2,3 +2,5 @@ dash
 pillow
 geopandas
 plotly.express
+dash_bootstrap_components
+gunicorn
