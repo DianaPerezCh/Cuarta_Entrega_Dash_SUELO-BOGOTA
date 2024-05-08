@@ -83,8 +83,26 @@ Poblacion_RespuestaSismica = dbc.Container(
         dcc.RadioItems(ZonaSismica['RESSIS'].unique(), id='Zonasismica_consultada',
                     style={'background-color':'#FFCC80',"font-weight": "bold",'textAlign':'left'}),
         html.Hr(),
-        html.H3('Cantidad de Habitantes'),
+        html.H3('Cantidad de Habitantes en Bogotá D.C.'),
         html.Hr(),
-        html.H5('Dentro de la zonificación de la respuesta sismica Cerros se encuentra: 333949 Habitantes dentro de la localidad de CIUDAD BOLIVAR',style={'background-color':'#FFCC80'})
+        html.H5(id='Poblacion_Total',style={'background-color':'#FFCC80'})
     ]
 )
+
+#Se define la funcion a utilizar en funcion de la seleccion de las zonas de respuesta sismica
+def consultarzonassismica(Zonasismica_consultada):
+
+    #Se cambia a las coordenadas de las bases de datos deseadas
+    ZonaSismica_4686 = ZonaSismica.to_crs(epsg=4686)
+    DensidadPoblacional_4686 = DensidadPoblacional.to_crs(epsg=4686)
+
+    #Se recorta la base de datos de las zonas de respuesta sismica con la zonas de respuesta sismica buscada
+    Zonasismica_buscada = ZonaSismica_4686.query(f"RESSIS == '{Zonasismica_consultada}'")
+        
+    #Se sobrepone la base de datos recortada con la base de datos de la Densidad Poblacional
+    DensidadPoblacional_Zonasismica = gpd.overlay(
+    DensidadPoblacional_4686, Zonasismica_buscada, how='intersection')
+
+    PoblacionTotal=DensidadPoblacional_Zonasismica["PER_S010"].sum()
+
+    return 'Dentro de la zona de respuesta sismica ' + str(Zonasismica_consultada) + ' se encuentran ' + str(PoblacionTotal) + ' habitantes en la ciudad de Bogotá'

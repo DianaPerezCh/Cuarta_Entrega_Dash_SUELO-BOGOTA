@@ -6,7 +6,7 @@ from PIL import Image
 
 # Se importa el frontend y el backend
 from frontend.Presentacion import presentacion, Finalizacion
-from backend.respuesta_sismica import Tituto1, RespuestaSismica, consultarLocalidad, Division, Poblacion_RespuestaSismica
+from backend.respuesta_sismica import Tituto1, RespuestaSismica, consultarLocalidad, Division, Poblacion_RespuestaSismica, consultarzonassismica
 from backend.Zonificacion_Geotecnica import Tituto2, zonificacionGeotecnica, consultarLocalidad_1, Poblacion_zonificacionGeotecnica
 from backend.Geologia_Urbana import Tituto3, GeologiaUrbana, consultarLocalidad_2, Poblacion_GeologiaUrbana
 from backend.Geologia_Rural import Tituto4, GeologiaRural, consultarLocalidad_3, Poblacion_GeologiaRural
@@ -67,15 +67,25 @@ app.layout = dbc.Container([
     ]
     )
 
-#Conexion con la funcion del mapa - Seccion 1
+#Conexion con la funcion del mapa - Seccion 1 - Parte 1
 @callback(
     Output("mapa", "figure"),
     Input("localidad_consultada", "value")
 )
 
-#Funcion a conectar del mapa  - Seccion 1
+#Funcion a conectar del mapa  - Seccion 1 - Parte 1
 def update_map(localidad_consultada):
     return consultarLocalidad(localidad_consultada)
+
+#Conexion con la funcion del mapa - Seccion 1 - Parte 2
+@callback(
+    Output("Poblacion_Total", "children"),
+    Input("Zonasismica_consultada", "value")
+)
+
+#Funcion a conectar del mapa  - Seccion 1 - Parte 2
+def update_poblacion(Zonasismica_consultada):
+    return consultarzonassismica(Zonasismica_consultada)
 
 #Conexion con la funcion del mapa  - Seccion 2
 @callback(
