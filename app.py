@@ -148,4 +148,4 @@ def update_poblacion_3(geologiarural_consultada):
     return consultarGeologiaRural(geologiarural_consultada)
 
 if __name__ == '__main__' :
-    app.run_server(debug=True)
+    app.run_server(debug=False)
