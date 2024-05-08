@@ -68,7 +68,7 @@ app.layout = dbc.Container([
     )
 
 #Conexion con la funcion del mapa - Seccion 1 - Parte 1
-@callback(
+@app.callback(
     Output("mapa", "figure"),
     Input("localidad_consultada", "value")
 )
@@ -78,7 +78,7 @@ def update_map(localidad_consultada):
     return consultarLocalidad(localidad_consultada)
 
 #Conexion con la funcion del mapa - Seccion 1 - Parte 2
-@callback(
+@app.callback(
     Output("Poblacion_Total", "children"),
     Input("Zonasismica_consultada", "value")
 )
@@ -88,7 +88,7 @@ def update_poblacion(Zonasismica_consultada):
     return consultarzonassismica(Zonasismica_consultada)
 
 #Conexion con la funcion del mapa  - Seccion 2 - Parte 1
-@callback(
+@app.callback(
     Output("mapa_1", "figure"),
     Input("localidad_consultada_1", "value")
 )
@@ -98,7 +98,7 @@ def update_map_1(localidad_consultada_1):
     return consultarLocalidad_1(localidad_consultada_1)
 
 #Conexion con la funcion del mapa - Seccion 2 - Parte 2
-@callback(
+@app.callback(
     Output("Poblacion_Total_1", "children"),
     Input("zonificacionGeotecnica_consultada", "value")
 )
@@ -108,7 +108,7 @@ def update_poblacion_1(zonificacionGeotecnica_consultada):
     return consultarZonificaciongeotecnica(zonificacionGeotecnica_consultada)
 
 #Conexion con la funcion del mapa  - Seccion 3 - Parte 1
-@callback(
+@app.callback(
     Output("mapa_2", "figure"),
     Input("localidad_consultada_2", "value")
 )
@@ -118,7 +118,7 @@ def update_map_2(localidad_consultada_2):
     return consultarLocalidad_2(localidad_consultada_2)
 
 #Conexion con la funcion del mapa - Seccion 3 - Parte 2
-@callback(
+@app.callback(
     Output("Poblacion_Total_2", "children"),
     Input("geologiaurbana_consultada", "value")
 )
@@ -128,7 +128,7 @@ def update_poblacion_2(geologiaurbana_consultada):
     return consultarGeologiaUrbana(geologiaurbana_consultada)
 
 #Conexion con la funcion del mapa  - Seccion - Parte 1
-@callback(
+@app.callback(
     Output("mapa_3", "figure"),
     Input("localidad_consultada_3", "value")
 )
@@ -138,7 +138,7 @@ def update_map_3(localidad_consultada_3):
     return consultarLocalidad_3(localidad_consultada_3)
 
 #Conexion con la funcion del mapa - Seccion 4 - Parte 2
-@callback(
+@app.callback(
     Output("Poblacion_Total_3", "children"),
     Input("geologiarural_consultada", "value")
 )
