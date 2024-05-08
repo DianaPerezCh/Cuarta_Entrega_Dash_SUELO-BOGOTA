@@ -1,9 +1,6 @@
 dash
-Dash
 dash_bootstrap_components
 pillow
 geopandas
-html
-dcc
-callback
-Input
+plotly.express
+plotly.graph_objects
