@@ -12,7 +12,7 @@ Tituto3 = html.H3('Geología Urbana')
 #Se importan las bases de datos
 Localidades_2 = gpd.read_file('data\Localidades')
 Geologia_urbana = gpd.read_file('data\Geologia Urbana')
-DensidadPoblacional=gpd.read_file('data\Centroides_Manzanas.geojson')
+DensidadPoblacional_2=gpd.read_file('data\Centroides_Manzanas.geojson')
 
 #Parte izquierda de la tercera seccion - GEOLOGIA URBANA
 
@@ -70,16 +70,33 @@ GeologiaUrbana = dbc.Container(
 
 #Parte derecha de la tercera seccion - GEOLOGIA URBANA
 
+def consultarGeologiaUrbana(geologiaurbana_consultada):
+
+    #Se cambia a las coordenadas de las bases de datos deseadas
+    Geologia_urbana_4686 = Geologia_urbana.to_crs(epsg=4686)
+    DensidadPoblacional_4686_2 = DensidadPoblacional_2.to_crs(epsg=4686)
+
+    #Se recorta la base de datos de la geologia urbana con la geologia urbana buscada
+    Geologia_urbana_buscada = Geologia_urbana_4686.query(f"LEY_GEO == '{geologiaurbana_consultada}'")
+        
+    #Se sobrepone la base de datos recortada con la base de datos de la Densidad Poblacional
+    DensidadPoblacional_Geologia_urbana = gpd.overlay(
+    DensidadPoblacional_4686_2, Geologia_urbana_buscada, how='intersection')
+
+    PoblacionTotal_2=DensidadPoblacional_Geologia_urbana["PER_S010"].sum()
+
+    return 'Dentro de la clasificación geológica ' + str(geologiaurbana_consultada) + ' se encuentran ' + str(PoblacionTotal_2) + ' habitantes en la ciudad de Bogotá'
+
 #Se define el container de la parte derecha de la tercera sección
 Poblacion_GeologiaUrbana = dbc.Container(
     [
         html.H3('Geológia Urbana'),
         html.Hr(),
-        dcc.RadioItems(Geologia_urbana['LEY_GEO'].unique(), id='geologiaurbana_consultada',
+        dcc.RadioItems(Geologia_urbana['LEY_GEO'].unique(),'Pgb', id='geologiaurbana_consultada',
                     style={'background-color':'#FFCC80',"font-weight": "bold",'textAlign':'left'}),
         html.Hr(),
-        html.H3('Cantidad de Habitantes'),
+        html.H3('Cantidad de Habitantes en Bogotá D.C.'),
         html.Hr(),
-        html.H5('Dentro de la unidad geológica de Pgb se encuentra:13884 Habitantes dentro de la localidad de CIUDAD BOLIVAR',style={'background-color':'#FFCC80'})
+        html.H5(id='Poblacion_Total_2',style={'background-color':'#FFCC80'})
     ]
 )

@@ -12,7 +12,7 @@ Tituto2 = html.H3('Zonificación Geotécnica')
 #Se importan las bases de datos
 Localidades_1 = gpd.read_file('data\Localidades')
 zonificaciongeotecnica = gpd.read_file('data\Zonificación Geotécnica')
-DensidadPoblacional=gpd.read_file('data\Centroides_Manzanas.geojson')
+DensidadPoblacional_1=gpd.read_file('data\Centroides_Manzanas.geojson')
 
 #Parte izquierda de la segunda seccion - ZONIFICACION GEOTECNICA
 
@@ -69,17 +69,35 @@ zonificacionGeotecnica = dbc.Container(
 
 #Parte derecha de la primera seccion - ZONIFICACION GEOTECNICA
 
+#Se define la funcion a utilizar en funcion de la seleccion de la zonificacion geotecnica
+def consultarZonificaciongeotecnica(zonificacionGeotecnica_consultada):
+
+    #Se cambia a las coordenadas de las bases de datos deseadas
+    zonificaciongeotecnica_4686 = zonificaciongeotecnica.to_crs(epsg=4686)
+    DensidadPoblacional_4686_1 = DensidadPoblacional_1.to_crs(epsg=4686)
+
+    #Se recorta la base de datos de la zonificacion geotecnica con la zonificacion geotecnica buscada
+    zonificaciongeotecnica_buscada = zonificaciongeotecnica_4686.query(f"GEOTECNIA == '{zonificacionGeotecnica_consultada}'")
+        
+    #Se sobrepone la base de datos recortada con la base de datos de la Densidad Poblacional
+    DensidadPoblacional_zonificaciongeotecnica = gpd.overlay(
+    DensidadPoblacional_4686_1, zonificaciongeotecnica_buscada, how='intersection')
+
+    PoblacionTotal_1=DensidadPoblacional_zonificaciongeotecnica["PER_S010"].sum()
+
+    return 'Dentro de la zonificación geotecnica ' + str(zonificacionGeotecnica_consultada) + ' se encuentran ' + str(PoblacionTotal_1) + ' habitantes en la ciudad de Bogotá'
+
 #Se define el container de la parte derecha de la segunda sección
 
 Poblacion_zonificacionGeotecnica = dbc.Container(
     [
         html.H3('Geotecnia'),
         html.Hr(),
-        dcc.RadioItems(zonificaciongeotecnica['GEOTECNIA'].unique(), id='zonificacionGeotecnica_consultada',
+        dcc.RadioItems(zonificaciongeotecnica['GEOTECNIA'].unique(), 'Cerros A', id='zonificacionGeotecnica_consultada',
                     style={'background-color':'#FFCC80',"font-weight": "bold",'textAlign':'left'}),
         html.Hr(),
-        html.H3('Cantidad de Habitantes'),
+        html.H3('Cantidad de Habitantes en Bogotá D.C.'),
         html.Hr(),
-        html.H5('Dentro de la zonificación de geotecnia Cerros A se encuentra: 115670 Habitantes dentro de la localidad de CIUDAD BOLIVAR',style={'background-color':'#FFCC80'})
+        html.H5(id='Poblacion_Total_1',style={'background-color':'#FFCC80'})
     ]
 )

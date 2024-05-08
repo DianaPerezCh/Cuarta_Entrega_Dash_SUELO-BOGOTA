@@ -12,7 +12,7 @@ Tituto4 = html.H3('Geología Rural')
 #Se importan las bases de datos
 Localidades_3 = gpd.read_file('data\Localidades')
 Geologia_rural = gpd.read_file('data\Geología Rural')
-DensidadPoblacional=gpd.read_file('data\Centroides_Manzanas.geojson')
+DensidadPoblacional_3=gpd.read_file('data\Centroides_Manzanas.geojson')
 
 #Parte izquierda de la cuarta seccion - GEOLOGIA RURAL
 
@@ -69,17 +69,33 @@ GeologiaRural = dbc.Container(
 )
 
 #Parte derecha de la cuarta seccion - GEOLOGIA RURAL
+def consultarGeologiaRural(geologiarural_consultada):
+
+    #Se cambia a las coordenadas de las bases de datos deseadas
+    Geologia_rural_4686 = Geologia_rural.to_crs(epsg=4686)
+    DensidadPoblacional_4686_3 = DensidadPoblacional_3.to_crs(epsg=4686)
+
+    #Se recorta la base de datos de la geologia rural con la geologia rural buscada
+    Geologia_rural_buscada = Geologia_rural_4686.query(f"UNIDAD == '{geologiarural_consultada}'")
+        
+    #Se sobrepone la base de datos recortada con la base de datos de la Densidad Poblacional
+    DensidadPoblacional_Geologia_rural = gpd.overlay(
+    DensidadPoblacional_4686_3, Geologia_rural_buscada, how='intersection')
+
+    PoblacionTotal_3=DensidadPoblacional_Geologia_rural["PER_S010"].sum()
+
+    return 'Dentro de la clasificación geológica ' + str(geologiarural_consultada) + ' se encuentran ' + str(PoblacionTotal_3) + ' habitantes en la ciudad de Bogotá'
 
 #Se define el container de la parte derecha de la cuarta sección
 Poblacion_GeologiaRural = dbc.Container(
     [
         html.H3('Geológia Rural'),
         html.Hr(),
-        dcc.RadioItems(Geologia_rural['UNIDAD'].unique(), id='geologiarural_consultada',
+        dcc.RadioItems(Geologia_rural['UNIDAD'].unique(), 'Rb4 (E1b)',id='geologiarural_consultada',
                     style={'background-color':'#FFCC80',"font-weight": "bold",'textAlign':'left'}),
         html.Hr(),
-        html.H3('Cantidad de Habitantes'),
+        html.H3('Cantidad de Habitantes en Bogotá D.C.'),
         html.Hr(),
-        html.H5('Dentro de la unidad geológica de Rb5 (K2E1g) se encuentra: 204 Habitantes dentro de la localidad de CIUDAD BOLIVAR',style={'background-color':'#FFCC80'})
+        html.H5(id='Poblacion_Total_3',style={'background-color':'#FFCC80'})
     ]
 )

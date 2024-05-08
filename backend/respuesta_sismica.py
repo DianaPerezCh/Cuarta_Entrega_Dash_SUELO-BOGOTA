@@ -75,20 +75,6 @@ RespuestaSismica = dbc.Container(
 
 #Parte derecha de la primera seccion - ZONA DE RESPUESTA SISMICA
 
-#Se define el container de la parte derecha de la primera sección
-Poblacion_RespuestaSismica = dbc.Container(
-    [
-        html.H3('Zonificación del suelo'),
-        html.Hr(),
-        dcc.RadioItems(ZonaSismica['RESSIS'].unique(), id='Zonasismica_consultada',
-                    style={'background-color':'#FFCC80',"font-weight": "bold",'textAlign':'left'}),
-        html.Hr(),
-        html.H3('Cantidad de Habitantes en Bogotá D.C.'),
-        html.Hr(),
-        html.H5(id='Poblacion_Total',style={'background-color':'#FFCC80'})
-    ]
-)
-
 #Se define la funcion a utilizar en funcion de la seleccion de las zonas de respuesta sismica
 def consultarzonassismica(Zonasismica_consultada):
 
@@ -106,3 +92,18 @@ def consultarzonassismica(Zonasismica_consultada):
     PoblacionTotal=DensidadPoblacional_Zonasismica["PER_S010"].sum()
 
     return 'Dentro de la zona de respuesta sismica ' + str(Zonasismica_consultada) + ' se encuentran ' + str(PoblacionTotal) + ' habitantes en la ciudad de Bogotá'
+
+
+#Se define el container de la parte derecha de la primera sección
+Poblacion_RespuestaSismica = dbc.Container(
+    [
+        html.H3('Zonificación del suelo'),
+        html.Hr(),
+        dcc.RadioItems(ZonaSismica['RESSIS'].unique(), 'Lacustre 200', id='Zonasismica_consultada',
+                    style={'background-color':'#FFCC80',"font-weight": "bold",'textAlign':'left'}),
+        html.Hr(),
+        html.H3('Cantidad de Habitantes en Bogotá D.C.'),
+        html.Hr(),
+        html.H5(id='Poblacion_Total',style={'background-color':'#FFCC80'})
+    ]
+)
