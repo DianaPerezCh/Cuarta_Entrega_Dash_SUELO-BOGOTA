@@ -4,4 +4,4 @@ geopandas
 plotly.express
 gunicorn
 dash_bootstrap_components
-fiona.open
+fiona
