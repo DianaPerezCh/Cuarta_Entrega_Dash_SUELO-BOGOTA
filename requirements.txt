@@ -5,4 +5,4 @@ plotly.express
 gunicorn
 dash_bootstrap_components
 plotly
-lib._bootstrap
+importlib._bootstrap
