@@ -1,0 +1,5 @@
+dash
+dash_bootstrap_components
+PIL
+geopandas
+plotly.express
