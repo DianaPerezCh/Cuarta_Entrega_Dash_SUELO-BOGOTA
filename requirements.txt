@@ -5,3 +5,6 @@ pandas
 plotly.express
 gunicorn
 dash_bootstrap_components
+data\Localidades
+data\Respuesta Sísmica
+data\Centroides_Manzanas.geojson
