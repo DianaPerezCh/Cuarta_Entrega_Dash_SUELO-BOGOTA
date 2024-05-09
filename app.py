@@ -1,22 +1,3 @@
-import fiona
- 
-# Listar los drivers disponibles en Fiona con:
-fiona.supported_drivers
- 
-# Asegurarse que existen en el listado.
-# De lo contario deberán habilitarse.
- 
-# Habilitar los drivers (según versión):
-fiona.drvsupport.supported_drivers['libkml'] = 'rw'
-fiona.drvsupport.supported_drivers['LIBKML'] = 'rw'
- 
-# O bien:
-fiona.drvsupport.supported_drivers['libkml'] = 'rw'
-fiona.drvsupport.supported_drivers['LIBKML'] = 'rw'
- 
-# Comprobar nuevamente que se ha actualizado el listado:
-fiona.supported_drivers
-
 # Se importan Las librerias
 import dash
 from dash import Dash, html, dcc, callback, Input, Output
